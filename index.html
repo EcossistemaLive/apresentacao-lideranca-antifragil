@@ -14,13 +14,17 @@
         /* ViDi Design System Tokens */
         :root {
             --color-gold: #C9A84C;
+            --color-gold-dark: #A68A3F;
+            --color-gold-light: #E0C37A;
             --color-black: #0A0A0A;
+            --color-dark-gray: #1A1A1A;
             --color-offwhite: #F5F0E8;
             
             --font-primary: 'Playfair Display', serif;
             --font-secondary: 'Roboto', sans-serif;
             
-            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-smooth: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         /* Viewport Base Rules */
@@ -47,12 +51,11 @@
             overflow-y: auto;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            scrollbar-width: none;
         }
 
         .presentation-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari and Opera */
+            display: none;
         }
 
         section {
@@ -66,7 +69,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 4rem;
+            padding: 2rem;
             overflow: hidden;
         }
 
@@ -74,15 +77,17 @@
         h1, h2, h3 {
             font-family: var(--font-primary);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             line-height: 1.1;
+            font-weight: 700;
         }
 
-        h1 { font-size: clamp(2.5rem, 8vw, 5rem); color: var(--color-gold); }
-        h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1.5rem; }
-        p { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.6; max-width: 40ch; }
+        h1 { font-size: clamp(2.5rem, 10vw, 6rem); color: var(--color-gold); text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { font-size: clamp(1.8rem, 6vw, 4rem); margin-bottom: 2rem; }
+        h3 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--color-gold-light); }
+        p { font-size: clamp(1rem, 2.5vw, 1.4rem); line-height: 1.6; max-width: 45ch; font-weight: 300; opacity: 0.9; }
 
-        /* Slide Specific Styles */
+        /* Slide Components */
         .slide-bg {
             position: absolute;
             top: 0;
@@ -91,33 +96,75 @@
             height: 100%;
             object-fit: cover;
             z-index: -1;
-            opacity: 0.4;
-            transition: var(--transition-smooth);
+            opacity: 0.3;
+            transition: transform 2s ease-out;
+            filter: grayscale(20%) contrast(110%);
+        }
+
+        section.active .slide-bg {
+            transform: scale(1.05);
         }
 
         .content-card {
-            background: rgba(10, 10, 10, 0.8);
-            padding: 3rem;
-            border-left: 4px solid var(--color-gold);
-            backdrop-filter: blur(10px);
-            max-width: 800px;
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 4rem;
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-left: 8px solid var(--color-gold);
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.05) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .vidi-logo {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
+            position: fixed;
+            top: 3rem;
+            right: 3rem;
             font-family: var(--font-primary);
             color: var(--color-gold);
             font-weight: 900;
-            letter-spacing: 0.3em;
-            font-size: 1.5rem;
+            letter-spacing: 0.5em;
+            font-size: 1.2rem;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--color-gold-dark), var(--color-gold-light));
+            width: 0%;
+            transition: width 0.3s ease-out;
+            box-shadow: 0 0 10px var(--color-gold);
         }
 
         /* Animations */
         [data-reveal] {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(50px);
             transition: var(--transition-smooth);
         }
 
@@ -129,74 +176,93 @@
         .delay-1 { transition-delay: 0.2s; }
         .delay-2 { transition-delay: 0.4s; }
         .delay-3 { transition-delay: 0.6s; }
+        .delay-4 { transition-delay: 0.8s; }
 
         /* Grid Layouts */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 4rem;
             align-items: center;
             width: 100%;
             max-width: 1200px;
         }
 
+        @media (max-width: 992px) {
+            .grid-2 { grid-template-columns: 1fr; gap: 2rem; }
+            section { padding: 1.5rem; }
+            .content-card { padding: 2rem; }
+        }
+
         .tag {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--color-gold);
-            color: var(--color-black);
-            font-weight: bold;
-            font-size: 0.75rem;
-            margin-bottom: 1rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid var(--color-gold);
+            color: var(--color-gold);
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-bottom: 2rem;
             text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .highlight {
+            color: var(--color-gold);
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
+    <div class="vidi-logo">ViDi</div>
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
     <div class="presentation-container" id="presentation">
         
         <!-- SLIDE 1: CAPA -->
         <section id="slide-1" class="active">
-            <div class="vidi-logo">ViDi</div>
             <img src="vidi_antifragile_title_bg_1777388357581.png" class="slide-bg" alt="ViDi Background">
             <h1 data-reveal>Liderança<br>Antifrágil</h1>
-            <p data-reveal class="delay-1">O Guia Definitivo para Prosperar no Caos</p>
-            <div style="margin-top: 3rem; height: 2px; width: 100px; background: var(--color-gold);" data-reveal class="delay-2"></div>
+            <p data-reveal class="delay-1">O Guia Estratégico para <span class="highlight">Prosperar</span> no Caos</p>
+            <div style="margin-top: 4rem; height: 1px; width: 150px; background: linear-gradient(to right, var(--color-gold), transparent);" data-reveal class="delay-2"></div>
         </section>
 
         <!-- SLIDE 2: CONCEITO -->
         <section id="slide-2">
-            <div class="vidi-logo">ViDi</div>
             <div class="grid-2">
                 <div data-reveal>
-                    <span class="tag">Conceito</span>
-                    <h2>O que é<br>Antifragilidade?</h2>
-                    <p>Propriedade de sistemas que não apenas resistem ao estresse, mas que se <strong>beneficiam</strong> com ele.</p>
+                    <span class="tag">O Despertar</span>
+                    <h2>O que é ser<br>Antifrágil?</h2>
+                    <p>Diferente da resiliência, a antifragilidade não é sobre resistir ao impacto. É sobre usar a <strong>pressão</strong> como combustível para a evolução.</p>
+                    <p style="margin-top: 1.5rem; font-size: 1rem; opacity: 0.7;">Sistemas antifrágeis se tornam <span class="highlight">superiores</span> após o estresse.</p>
                 </div>
-                <div data-reveal class="delay-1">
-                    <img src="antifragility_metaphor_1777388376723.png" style="width: 100%; border: 1px solid var(--color-gold);" alt="Metaphor">
+                <div data-reveal class="delay-1" style="position: relative;">
+                    <img src="antifragility_metaphor_1777388376723.png" style="width: 100%; border: 1px solid rgba(201, 168, 76, 0.3); border-radius: 4px; box-shadow: 20px 20px 60px rgba(0,0,0,0.8);" alt="Metaphor">
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 3: O ESPECTRO -->
         <section id="slide-3">
-            <div class="vidi-logo">ViDi</div>
             <div class="content-card" data-reveal>
-                <h2>Fragilidade vs Resiliência vs Antifragilidade</h2>
-                <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
-                    <div style="flex: 1; padding: 1rem; border-right: 1px solid #333;">
-                        <h3 style="color: #666;">Frágil</h3>
-                        <p style="font-size: 0.9rem;">Quebra sob pressão.</p>
+                <span class="tag">Estratégia</span>
+                <h2>A Tríade da Evolução</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem;">
+                    <div data-reveal class="delay-1">
+                        <h3 style="color: #444;">O Frágil</h3>
+                        <p style="font-size: 0.95rem;">Teme a incerteza. Quebra diante do inesperado.</p>
                     </div>
-                    <div style="flex: 1; padding: 1rem; border-right: 1px solid #333;">
-                        <h3 style="color: #999;">Resiliente</h3>
-                        <p style="font-size: 0.9rem;">Resiste e volta ao normal.</p>
+                    <div data-reveal class="delay-2">
+                        <h3 style="color: #888;">O Resiliente</h3>
+                        <p style="font-size: 0.95rem;">Suporta o peso. Absorve o choque, mas permanece igual.</p>
                     </div>
-                    <div style="flex: 1; padding: 1rem;">
-                        <h3 style="color: var(--color-gold);">Antifrágil</h3>
-                        <p style="font-size: 0.9rem;">Fica melhor do que antes.</p>
+                    <div data-reveal class="delay-3">
+                        <h3 style="color: var(--color-gold);">O Antifrágil</h3>
+                        <p style="font-size: 0.95rem;">Ama o erro. Cada falha é uma peça de um sistema mais forte.</p>
                     </div>
                 </div>
             </div>
@@ -204,94 +270,127 @@
 
         <!-- SLIDE 4: ADAPTABILIDADE -->
         <section id="slide-4">
-            <div class="vidi-logo">ViDi</div>
-            <h2 data-reveal>Adaptabilidade</h2>
-            <p data-reveal class="delay-1" style="text-align: center; max-width: 60ch;">A adaptabilidade é a <strong>ferramenta prática</strong> que permite que líderes e organizações se tornem antifrágeis.</p>
-            <div class="grid-2" style="margin-top: 3rem;">
-                <div class="content-card" data-reveal class="delay-2">
-                    <h3>Postura Ativa</h3>
-                    <p style="font-size: 0.9rem;">Ajuste contínuo e proativo ao ambiente.</p>
+            <h2 data-reveal>A Arma do Líder: Adaptabilidade</h2>
+            <p data-reveal class="delay-1" style="text-align: center; max-width: 70ch; margin-bottom: 4rem;">Não é a inteligência que vence, mas a <span class="highlight">velocidade de resposta</span> às mudanças.</p>
+            <div class="grid-2">
+                <div class="content-card" data-reveal class="delay-2" style="padding: 2.5rem;">
+                    <h3>Postura de Caça</h3>
+                    <p style="font-size: 0.95rem;">Antecipar tendências e ajustar a rota antes que o mercado exija.</p>
                 </div>
-                <div class="content-card" data-reveal class="delay-3">
-                    <h3>Aprendizado</h3>
-                    <p style="font-size: 0.9rem;">Transformar dificuldades em combustível para o aprimoramento.</p>
+                <div class="content-card" data-reveal class="delay-3" style="padding: 2.5rem;">
+                    <h3>Alquimia do Erro</h3>
+                    <p style="font-size: 0.95rem;">Extrair sabedoria bruta de cada tentativa frustrada.</p>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 5: VUCA -->
         <section id="slide-5">
-            <div class="vidi-logo">ViDi</div>
-            <span class="tag" data-reveal>Contexto</span>
-            <h2 data-reveal class="delay-1">O Mundo VUCA</h2>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%; max-width: 1000px; margin-top: 2rem;">
-                <div class="content-card" data-reveal class="delay-1" style="padding: 1.5rem;">
-                    <h3 style="color: var(--color-gold);">V</h3>
-                    <p style="font-size: 0.8rem;">Volatilidade</p>
+            <span class="tag" data-reveal>Realidade Atual</span>
+            <h2 data-reveal class="delay-1">Navegando no Mundo VUCA</h2>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; width: 100%; max-width: 1100px; margin-top: 3rem;">
+                <div class="content-card" data-reveal class="delay-1" style="padding: 2rem; text-align: center;">
+                    <h3 style="color: var(--color-gold); font-size: 2.5rem; margin-bottom: 0.5rem;">V</h3>
+                    <p style="font-size: 0.85rem; font-weight: 700;">Volatilidade</p>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.6;">Velocidade das mudanças</p>
                 </div>
-                <div class="content-card" data-reveal class="delay-2" style="padding: 1.5rem;">
-                    <h3 style="color: var(--color-gold);">U</h3>
-                    <p style="font-size: 0.8rem;">Incerteza</p>
+                <div class="content-card" data-reveal class="delay-2" style="padding: 2rem; text-align: center;">
+                    <h3 style="color: var(--color-gold); font-size: 2.5rem; margin-bottom: 0.5rem;">U</h3>
+                    <p style="font-size: 0.85rem; font-weight: 700;">Incerteza</p>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.6;">Imprevisibilidade total</p>
                 </div>
-                <div class="content-card" data-reveal class="delay-3" style="padding: 1.5rem;">
-                    <h3 style="color: var(--color-gold);">C</h3>
-                    <p style="font-size: 0.8rem;">Complexidade</p>
+                <div class="content-card" data-reveal class="delay-3" style="padding: 2rem; text-align: center;">
+                    <h3 style="color: var(--color-gold); font-size: 2.5rem; margin-bottom: 0.5rem;">C</h3>
+                    <p style="font-size: 0.85rem; font-weight: 700;">Complexidade</p>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.6;">Múltiplas conexões</p>
                 </div>
-                <div class="content-card" data-reveal class="delay-4" style="padding: 1.5rem;">
-                    <h3 style="color: var(--color-gold);">A</h3>
-                    <p style="font-size: 0.8rem;">Ambiguidade</p>
+                <div class="content-card" data-reveal class="delay-4" style="padding: 2rem; text-align: center;">
+                    <h3 style="color: var(--color-gold); font-size: 2.5rem; margin-bottom: 0.5rem;">A</h3>
+                    <p style="font-size: 0.85rem; font-weight: 700;">Ambiguidade</p>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.6;">Falta de clareza</p>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 6: TEMPERAMENTOS -->
         <section id="slide-6">
-            <div class="vidi-logo">ViDi</div>
             <img src="temperaments_elements_1777388396511.png" class="slide-bg" alt="Elements">
-            <h2 data-reveal>Os 4 Temperamentos</h2>
-            <div class="grid-2" style="margin-top: 2rem;">
-                <div data-reveal class="delay-1">
-                    <p><strong>Sanguíneo:</strong> Ar - Dinamismo</p>
-                    <p><strong>Colérico:</strong> Fogo - Intensidade</p>
+            <span class="tag" data-reveal>Autoconhecimento</span>
+            <h2 data-reveal>Os 4 Pilares do Comportamento</h2>
+            <div class="grid-2" style="margin-top: 3rem;">
+                <div data-reveal class="delay-1" style="border-left: 2px solid var(--color-gold); padding-left: 2rem;">
+                    <h3 style="text-transform: none; letter-spacing: normal;">Sanguíneo <span style="font-size: 0.8rem; opacity: 0.5;">(Ar)</span></h3>
+                    <p style="font-size: 1rem;">Otimismo, comunicação e movimento constante.</p>
+                    <h3 style="text-transform: none; letter-spacing: normal; margin-top: 2rem;">Colérico <span style="font-size: 0.8rem; opacity: 0.5;">(Fogo)</span></h3>
+                    <p style="font-size: 1rem;">Liderança nata, foco em resultados e execução.</p>
                 </div>
-                <div data-reveal class="delay-2">
-                    <p><strong>Fleumático:</strong> Água - Serenidade</p>
-                    <p><strong>Melancólico:</strong> Terra - Profundidade</p>
+                <div data-reveal class="delay-2" style="border-left: 2px solid var(--color-gold); padding-left: 2rem;">
+                    <h3 style="text-transform: none; letter-spacing: normal;">Fleumático <span style="font-size: 0.8rem; opacity: 0.5;">(Água)</span></h3>
+                    <p style="font-size: 1rem;">Equilíbrio, paciência e mediação de conflitos.</p>
+                    <h3 style="text-transform: none; letter-spacing: normal; margin-top: 2rem;">Melancólico <span style="font-size: 0.8rem; opacity: 0.5;">(Terra)</span></h3>
+                    <p style="font-size: 1rem;">Planejamento, profundidade e atenção aos detalhes.</p>
                 </div>
             </div>
         </section>
 
         <!-- SLIDE 7: PERFIS HERMANN -->
         <section id="slide-7">
-            <div class="vidi-logo">ViDi</div>
-            <h2 data-reveal>Perfis Comportamentais</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; max-width: 800px;">
-                <div class="content-card" data-reveal class="delay-1">Gato: Interpessoal</div>
-                <div class="content-card" data-reveal class="delay-2">Lobo: Sequencial</div>
-                <div class="content-card" data-reveal class="delay-3">Águia: Imaginativo</div>
-                <div class="content-card" data-reveal class="delay-4">Tubarão: Analítico</div>
+            <span class="tag" data-reveal>Arquétipos</span>
+            <h2 data-reveal>A Matriz Dominante</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; width: 100%; max-width: 900px; margin-top: 2rem;">
+                <div class="content-card" data-reveal class="delay-1" style="padding: 2rem;">
+                    <h3>O Gato</h3>
+                    <p style="font-size: 0.9rem;"><strong>Interpessoal:</strong> O elo que une a equipe através da empatia.</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-2" style="padding: 2rem;">
+                    <h3>O Lobo</h3>
+                    <p style="font-size: 0.9rem;"><strong>Sequencial:</strong> A ordem e a organização que garantem a segurança.</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-3" style="padding: 2rem;">
+                    <h3>A Águia</h3>
+                    <p style="font-size: 0.9rem;"><strong>Imaginativo:</strong> A visão de futuro que rompe barreiras.</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-4" style="padding: 2rem;">
+                    <h3>O Tubarão</h3>
+                    <p style="font-size: 0.9rem;"><strong>Analítico:</strong> A lógica implacável que disseca o problema.</p>
+                </div>
             </div>
         </section>
 
         <!-- SLIDE 8: AS AUTO -->
         <section id="slide-8">
-            <div class="vidi-logo">ViDi</div>
-            <h2 data-reveal>As "Auto" da Liderança</h2>
-            <ul style="list-style: none; margin-top: 2rem;" data-reveal class="delay-1">
-                <li style="margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 1px solid var(--color-gold);">01. Autorresponsabilidade</li>
-                <li style="margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 1px solid var(--color-gold);">02. Autoconfiança</li>
-                <li style="margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 1px solid var(--color-gold);">03. Autodisciplina</li>
-                <li style="margin-bottom: 1rem; font-size: 1.5rem; color: var(--color-gold);">Autodesenvolvimento</li>
-            </ul>
+            <span class="tag" data-reveal>O Método</span>
+            <h2 data-reveal>As 4 Chaves da Liderança</h2>
+            <div style="width: 100%; max-width: 700px; margin-top: 2rem;">
+                <div style="margin-bottom: 2rem; border-bottom: 1px solid rgba(201, 168, 76, 0.3); padding-bottom: 1rem;" data-reveal class="delay-1">
+                    <h3 style="margin: 0; color: var(--color-offwhite);">01. Autorresponsabilidade</h3>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">A consciência de que você é o único responsável pelos seus resultados.</p>
+                </div>
+                <div style="margin-bottom: 2rem; border-bottom: 1px solid rgba(201, 168, 76, 0.3); padding-bottom: 1rem;" data-reveal class="delay-2">
+                    <h3 style="margin: 0; color: var(--color-offwhite);">02. Autoconfiança</h3>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">A base inabalável para tomar decisões difíceis sob pressão.</p>
+                </div>
+                <div style="margin-bottom: 2rem; border-bottom: 1px solid rgba(201, 168, 76, 0.3); padding-bottom: 1rem;" data-reveal class="delay-3">
+                    <h3 style="margin: 0; color: var(--color-offwhite);">03. Autodisciplina</h3>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">A execução consistente, mesmo quando a motivação desaparece.</p>
+                </div>
+                <div data-reveal class="delay-4">
+                    <h3 style="margin: 0; color: var(--color-gold);">04. Autodesenvolvimento</h3>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">O compromisso eterno com a maestria e o aprendizado contínuo.</p>
+                </div>
+            </div>
         </section>
 
         <!-- SLIDE 9: CONCLUSÃO -->
         <section id="slide-9">
-            <div class="vidi-logo">ViDi</div>
+            <img src="vidi_antifragile_title_bg_1777388357581.png" class="slide-bg" alt="ViDi Background" style="opacity: 0.2;">
             <div style="text-align: center;" data-reveal>
-                <p style="font-style: italic; font-size: 1.5rem; margin-bottom: 2rem;">"Se você acredita que é capaz, ou não acredita que é capaz, em ambos os casos você estará certo."</p>
+                <p style="font-style: italic; font-size: clamp(1.2rem, 3vw, 2rem); margin-bottom: 4rem; max-width: 30ch; margin-left: auto; margin-right: auto; line-height: 1.4;">
+                    "Se você acredita que é capaz, ou não acredita que é capaz, em ambos os casos você estará <span class="highlight">certo</span>."
+                </p>
+                <h2 style="font-size: 1rem; letter-spacing: 0.8em; margin-bottom: 0.5rem;">Mastery</h2>
                 <h1>Obrigado</h1>
-                <p style="margin-top: 1rem; color: var(--color-gold);">Liderança Antifrágil | ViDi 2025</p>
+                <p style="margin-top: 3rem; color: var(--color-gold); letter-spacing: 0.3em; font-size: 0.8rem; text-transform: uppercase;">Liderança Antifrágil | ViDi Academy</p>
             </div>
         </section>
 
@@ -300,10 +399,11 @@
     <script>
         const container = document.getElementById('presentation');
         const sections = document.querySelectorAll('section');
+        const progressBar = document.getElementById('progressBar');
         
         const observerOptions = {
             root: container,
-            threshold: 0.5
+            threshold: 0.6
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -311,25 +411,56 @@
                 if (entry.isIntersecting) {
                     sections.forEach(s => s.classList.remove('active'));
                     entry.target.classList.add('active');
+                    
+                    // Update progress bar
+                    const index = Array.from(sections).indexOf(entry.target);
+                    const progress = ((index + 1) / sections.length) * 100;
+                    progressBar.style.width = `${progress}%`;
                 }
             });
         }, observerOptions);
 
         sections.forEach(section => observer.observe(section));
 
-        // Keyboard Navigation
+        // Smooth Keyboard Navigation
         window.addEventListener('keydown', (e) => {
+            const current = document.querySelector('section.active');
             if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
-                const current = document.querySelector('section.active');
+                e.preventDefault();
                 const next = current.nextElementSibling;
-                if (next) next.scrollIntoView();
+                if (next) next.scrollIntoView({ behavior: 'smooth' });
             }
             if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                const current = document.querySelector('section.active');
+                e.preventDefault();
                 const prev = current.previousElementSibling;
-                if (prev) prev.scrollIntoView();
+                if (prev) prev.scrollIntoView({ behavior: 'smooth' });
             }
         });
+
+        // Touch handling for mobile
+        let touchstartY = 0;
+        let touchendY = 0;
+
+        container.addEventListener('touchstart', e => {
+            touchstartY = e.changedTouches[0].screenY;
+        });
+
+        container.addEventListener('touchend', e => {
+            touchendY = e.changedTouches[0].screenY;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            const current = document.querySelector('section.active');
+            if (touchendY < touchstartY) {
+                const next = current.nextElementSibling;
+                if (next) next.scrollIntoView({ behavior: 'smooth' });
+            }
+            if (touchendY > touchstartY) {
+                const prev = current.previousElementSibling;
+                if (prev) prev.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     </script>
 </body>
 </html>
