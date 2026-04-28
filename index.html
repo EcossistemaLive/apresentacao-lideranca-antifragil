@@ -217,6 +217,16 @@
             40% {transform: translateY(-10px) translateX(-50%);}
             60% {transform: translateY(-5px) translateX(-50%);}
         }
+
+        @keyframes logoPulse {
+            0% { opacity: 0.7; text-shadow: 0 0 5px var(--color-gold); }
+            50% { opacity: 1; text-shadow: 0 0 20px var(--color-gold); }
+            100% { opacity: 0.7; text-shadow: 0 0 5px var(--color-gold); }
+        }
+
+        .vidi-logo {
+            animation: logoPulse 4s infinite ease-in-out;
+        }
     </style>
 </head>
 <body>
