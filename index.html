@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Liderança Antifrágil | ViDi</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ViDi Design System Tokens */
+        :root {
+            --color-gold: #C9A84C;
+            --color-black: #0A0A0A;
+            --color-offwhite: #F5F0E8;
+            
+            --font-primary: 'Playfair Display', serif;
+            --font-secondary: 'Roboto', sans-serif;
+            
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Viewport Base Rules */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--color-black);
+            color: var(--color-offwhite);
+            font-family: var(--font-secondary);
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .presentation-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+
+        section {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            overflow: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--font-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            line-height: 1.1;
+        }
+
+        h1 { font-size: clamp(2.5rem, 8vw, 5rem); color: var(--color-gold); }
+        h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1.5rem; }
+        p { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.6; max-width: 40ch; }
+
+        /* Slide Specific Styles */
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.4;
+            transition: var(--transition-smooth);
+        }
+
+        .content-card {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 3rem;
+            border-left: 4px solid var(--color-gold);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+        }
+
+        .vidi-logo {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-family: var(--font-primary);
+            color: var(--color-gold);
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            font-size: 1.5rem;
+        }
+
+        /* Animations */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition-smooth);
+        }
+
+        section.active [data-reveal] {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--color-gold);
+            color: var(--color-black);
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container" id="presentation">
+        
+        <!-- SLIDE 1: CAPA -->
+        <section id="slide-1" class="active">
+            <div class="vidi-logo">ViDi</div>
+            <img src="vidi_antifragile_title_bg_1777388357581.png" class="slide-bg" alt="ViDi Background">
+            <h1 data-reveal>Liderança<br>Antifrágil</h1>
+            <p data-reveal class="delay-1">O Guia Definitivo para Prosperar no Caos</p>
+            <div style="margin-top: 3rem; height: 2px; width: 100px; background: var(--color-gold);" data-reveal class="delay-2"></div>
+        </section>
+
+        <!-- SLIDE 2: CONCEITO -->
+        <section id="slide-2">
+            <div class="vidi-logo">ViDi</div>
+            <div class="grid-2">
+                <div data-reveal>
+                    <span class="tag">Conceito</span>
+                    <h2>O que é<br>Antifragilidade?</h2>
+                    <p>Propriedade de sistemas que não apenas resistem ao estresse, mas que se <strong>beneficiam</strong> com ele.</p>
+                </div>
+                <div data-reveal class="delay-1">
+                    <img src="antifragility_metaphor_1777388376723.png" style="width: 100%; border: 1px solid var(--color-gold);" alt="Metaphor">
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: O ESPECTRO -->
+        <section id="slide-3">
+            <div class="vidi-logo">ViDi</div>
+            <div class="content-card" data-reveal>
+                <h2>Fragilidade vs Resiliência vs Antifragilidade</h2>
+                <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                    <div style="flex: 1; padding: 1rem; border-right: 1px solid #333;">
+                        <h3 style="color: #666;">Frágil</h3>
+                        <p style="font-size: 0.9rem;">Quebra sob pressão.</p>
+                    </div>
+                    <div style="flex: 1; padding: 1rem; border-right: 1px solid #333;">
+                        <h3 style="color: #999;">Resiliente</h3>
+                        <p style="font-size: 0.9rem;">Resiste e volta ao normal.</p>
+                    </div>
+                    <div style="flex: 1; padding: 1rem;">
+                        <h3 style="color: var(--color-gold);">Antifrágil</h3>
+                        <p style="font-size: 0.9rem;">Fica melhor do que antes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: ADAPTABILIDADE -->
+        <section id="slide-4">
+            <div class="vidi-logo">ViDi</div>
+            <h2 data-reveal>Adaptabilidade</h2>
+            <p data-reveal class="delay-1" style="text-align: center; max-width: 60ch;">A adaptabilidade é a <strong>ferramenta prática</strong> que permite que líderes e organizações se tornem antifrágeis.</p>
+            <div class="grid-2" style="margin-top: 3rem;">
+                <div class="content-card" data-reveal class="delay-2">
+                    <h3>Postura Ativa</h3>
+                    <p style="font-size: 0.9rem;">Ajuste contínuo e proativo ao ambiente.</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-3">
+                    <h3>Aprendizado</h3>
+                    <p style="font-size: 0.9rem;">Transformar dificuldades em combustível para o aprimoramento.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: VUCA -->
+        <section id="slide-5">
+            <div class="vidi-logo">ViDi</div>
+            <span class="tag" data-reveal>Contexto</span>
+            <h2 data-reveal class="delay-1">O Mundo VUCA</h2>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%; max-width: 1000px; margin-top: 2rem;">
+                <div class="content-card" data-reveal class="delay-1" style="padding: 1.5rem;">
+                    <h3 style="color: var(--color-gold);">V</h3>
+                    <p style="font-size: 0.8rem;">Volatilidade</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-2" style="padding: 1.5rem;">
+                    <h3 style="color: var(--color-gold);">U</h3>
+                    <p style="font-size: 0.8rem;">Incerteza</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-3" style="padding: 1.5rem;">
+                    <h3 style="color: var(--color-gold);">C</h3>
+                    <p style="font-size: 0.8rem;">Complexidade</p>
+                </div>
+                <div class="content-card" data-reveal class="delay-4" style="padding: 1.5rem;">
+                    <h3 style="color: var(--color-gold);">A</h3>
+                    <p style="font-size: 0.8rem;">Ambiguidade</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: TEMPERAMENTOS -->
+        <section id="slide-6">
+            <div class="vidi-logo">ViDi</div>
+            <img src="temperaments_elements_1777388396511.png" class="slide-bg" alt="Elements">
+            <h2 data-reveal>Os 4 Temperamentos</h2>
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div data-reveal class="delay-1">
+                    <p><strong>Sanguíneo:</strong> Ar - Dinamismo</p>
+                    <p><strong>Colérico:</strong> Fogo - Intensidade</p>
+                </div>
+                <div data-reveal class="delay-2">
+                    <p><strong>Fleumático:</strong> Água - Serenidade</p>
+                    <p><strong>Melancólico:</strong> Terra - Profundidade</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: PERFIS HERMANN -->
+        <section id="slide-7">
+            <div class="vidi-logo">ViDi</div>
+            <h2 data-reveal>Perfis Comportamentais</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; max-width: 800px;">
+                <div class="content-card" data-reveal class="delay-1">Gato: Interpessoal</div>
+                <div class="content-card" data-reveal class="delay-2">Lobo: Sequencial</div>
+                <div class="content-card" data-reveal class="delay-3">Águia: Imaginativo</div>
+                <div class="content-card" data-reveal class="delay-4">Tubarão: Analítico</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: AS AUTO -->
+        <section id="slide-8">
+            <div class="vidi-logo">ViDi</div>
+            <h2 data-reveal>As "Auto" da Liderança</h2>
+            <ul style="list-style: none; margin-top: 2rem;" data-reveal class="delay-1">
+                <li style="margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 1px solid var(--color-gold);">01. Autorresponsabilidade</li>
+                <li style="margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 1px solid var(--color-gold);">02. Autoconfiança</li>
+                <li style="margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 1px solid var(--color-gold);">03. Autodisciplina</li>
+                <li style="margin-bottom: 1rem; font-size: 1.5rem; color: var(--color-gold);">Autodesenvolvimento</li>
+            </ul>
+        </section>
+
+        <!-- SLIDE 9: CONCLUSÃO -->
+        <section id="slide-9">
+            <div class="vidi-logo">ViDi</div>
+            <div style="text-align: center;" data-reveal>
+                <p style="font-style: italic; font-size: 1.5rem; margin-bottom: 2rem;">"Se você acredita que é capaz, ou não acredita que é capaz, em ambos os casos você estará certo."</p>
+                <h1>Obrigado</h1>
+                <p style="margin-top: 1rem; color: var(--color-gold);">Liderança Antifrágil | ViDi 2025</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('presentation');
+        const sections = document.querySelectorAll('section');
+        
+        const observerOptions = {
+            root: container,
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    sections.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Keyboard Navigation
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                const current = document.querySelector('section.active');
+                const next = current.nextElementSibling;
+                if (next) next.scrollIntoView();
+            }
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                const current = document.querySelector('section.active');
+                const prev = current.previousElementSibling;
+                if (prev) prev.scrollIntoView();
+            }
+        });
+    </script>
+</body>
+</html>
